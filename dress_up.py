@@ -336,6 +336,13 @@ class GeneticAlgorithm:
                 print("[*] Generation #{}, Fitness : {}".format(_ + 1, self.progress[-1]),end="\n\n")
             self.nextGeneration()
 
+    def showBestOutfit(self, number):
+        print("\n\n[*] Best first %d Outfits are:" % (number))
+        for index, outfit in enumerate(self.currentGenerationSorted):
+            print( "\n\t{%d} %s\n" % (index, outfit) )
+            if index == number-1:
+                break
+
     def plotPerformance(self):
         print("[-] Plot the results.", end="\n\n")
         plt.plot([x for x in range(0, len(self.progress)*100, 100)], self.progress, marker='o', color='b', markevery=1)
@@ -346,7 +353,7 @@ class GeneticAlgorithm:
         plt.show()
 
 
-def runGA(dressCode, color, budget, poplength, generations, boost, error, show):
+def runGA(dressCode, color, budget, poplength, generations, boost, error, show, best):
     """
     The function to run the genetic algorithm process.
 
@@ -369,10 +376,12 @@ def runGA(dressCode, color, budget, poplength, generations, boost, error, show):
         budget=budget,
         boost=boost,
         error=error,
-        show=show
+        show=show,
         )
     # start the genetic algorithm 
     ga.start()
+    if (best != -1):
+        ga.showBestOutfit(best)
     ga.plotPerformance()
 
 
@@ -390,6 +399,8 @@ if __name__ == '__main__':
                                 default=0.0, help=TERMINATION_COND_MSG)
     parser.add_option('-i', '--show-info', dest='show', action='store_true',
                                 default=False, help="Show generations growth.")
+    parser.add_option("--best-outfit", metavar='BEST', dest="best",
+                                default=-1, help="Give the number of best Outfits to show in the end.")
 
 
     opts, args = parser.parse_args()
@@ -398,4 +409,5 @@ if __name__ == '__main__':
         exit(0)
 
     runGA(ga_.DressCode[args[0].upper()], ga_.Color[args[1].upper()], float(args[2]), poplength=int(opts.population), 
-                        generations=int(opts.generations), boost=opts.boost, error=float(opts.error), show=opts.show)
+                        generations=int(opts.generations), boost=opts.boost, error=float(opts.error), show=opts.show,
+                        best=int(opts.best))
