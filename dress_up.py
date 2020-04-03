@@ -333,7 +333,8 @@ class GeneticAlgorithm:
                     if _ != 0 and self.progress[-1] - self.progress[-2] < self.error:
                         return
             if self.show:
-                print("[*] Generation #{}, Fitness : {}".format(_ + 1, self.progress[-1]),end="\n\n")
+                generation_fitness = np.array([self.applyFitness(ind) for ind in self.currentGeneration])
+                print("[*] Generation #{}, Best fitness : {}, Average fitness : {}".format(_ + 1, self.progress[-1], np.mean(generation_fitness)), end="\n\n")
             self.nextGeneration()
         print("\n___________________\n")
         print("\n[3] Average fitness is: %f" % np.mean(self.progress))
