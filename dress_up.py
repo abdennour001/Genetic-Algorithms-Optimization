@@ -335,6 +335,10 @@ class GeneticAlgorithm:
             if self.show:
                 print("[*] Generation #{}, Fitness : {}".format(_ + 1, self.progress[-1]),end="\n\n")
             self.nextGeneration()
+        print("\n___________________\n")
+        print("\n[3] Average fitness is: %f" % np.mean(self.progress))
+        print("\n___________________\n")
+
 
     def showBestOutfit(self, number):
         print("\n\n[*] Best first %d Outfits are:" % (number))
